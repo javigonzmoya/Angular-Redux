@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "angular-redux-d8e5d": {
+      "hosting": {
+        "ingresoEgreso": [
+          "angular-redux-d8e5d"
+        ]
+      }
+    }
+  }
+}
