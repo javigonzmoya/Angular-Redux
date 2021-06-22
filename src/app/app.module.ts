@@ -9,6 +9,11 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
+//ngrx
+import { StoreModule } from "@ngrx/store";
+import { appReducers } from "./app.reducer";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { RegisterComponent } from "./auth/register/register.component";
@@ -41,6 +46,11 @@ import { ReactiveFormsModule } from "@angular/forms";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    StoreModule.forRoot(appReducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],
