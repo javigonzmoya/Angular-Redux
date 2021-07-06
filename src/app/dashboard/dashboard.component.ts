@@ -1,15 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { AppState } from "src/app/app.reducer";
+import { Store } from "@ngrx/store";
+import { filter } from "rxjs/operators";
+import { Subscription } from "rxjs";
+import { IngresoEgresoService } from "../services/ingreso-egreso.service";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styles: []
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styles: [],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  userSubs: Subscription;
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>,
+    private ingresoEgresoService: IngresoEgresoService
+  ) {}
 
   ngOnInit() {
+    this.userSubs = this.store
+      .select("auth")
+      .pipe(filter((auth) => auth.user !== null))
+      .subscribe(({ user }) => {
+        this.ingresoEgresoService
+          .initIngresosEgresosListener(user.uid)
+          .subscribe((data) => console.log(data));
+      });
   }
 
+  ngOnDestroy() {
+    this.userSubs.unsubscribe();
+  }
 }
